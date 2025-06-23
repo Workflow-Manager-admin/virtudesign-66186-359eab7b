@@ -2,6 +2,7 @@ import React from 'react';
 import TopNavBar from './TopNavBar';
 import FurnitureCatalog from './FurnitureCatalog';
 import RoomLayoutEditor from './RoomLayoutEditor';
+import RoomDimensionSetup from './RoomDimensionSetup';
 import ThemeTemplates from './ThemeTemplates';
 import SaveSharePanel from './SaveSharePanel';
 import AISuggestions from './AISuggestions';
@@ -9,12 +10,13 @@ import UserManagement from './UserManagement';
 
 /**
  * MainContainer - Primary app container for VirtuDesign.
- * Implements main layout, side FurnitureCatalog, central RoomLayoutEditor,
- * top navigation, and placeholders for overlays/panels.
+ * Implements main layout: side FurnitureCatalog, central RoomLayoutEditor (with RoomDimensionSetup),
+ * overlays for ThemeTemplates, SaveSharePanel, AISuggestions, and UserManagement as modals/panels,
+ * and persistent TopNavBar across the app.
  */
 // PUBLIC_INTERFACE
 export default function MainContainer() {
-  // Color palette
+  // Color palette for quick theme
   const palette = {
     primary: '#4A90E2',
     secondary: '#50E3C2',
@@ -26,7 +28,6 @@ export default function MainContainer() {
     shadow: '0 2px 8px 0 rgba(74,144,226,0.05)',
   };
 
-  // Style objects in place of extra CSS files for clarity
   const styles = {
     mainWrapper: {
       minHeight: '100vh',
@@ -45,7 +46,7 @@ export default function MainContainer() {
     flexContent: {
       display: 'flex',
       flex: 1,
-      height: 'calc(100vh - 56px)', // assume topbar height ≈ 56px
+      height: 'calc(100vh - 56px)',
       background: palette.bg,
       overflow: 'hidden',
       minHeight: 0,
@@ -73,7 +74,6 @@ export default function MainContainer() {
       alignItems: 'center',
       justifyContent: 'flex-start',
     },
-    // Placeholder overlays/modal areas are styled but hidden by default
     modal: {
       position: 'fixed',
       top: 0,
@@ -92,16 +92,24 @@ export default function MainContainer() {
 
   return (
     <div style={styles.mainWrapper}>
+      {/* App-wide top navigation */}
       <div style={styles.topBar}>
         <TopNavBar />
       </div>
       <div style={styles.flexContent}>
+        {/* Left: Furniture Catalog Sidebar */}
         <aside style={styles.furniturePanel}>
           <FurnitureCatalog />
         </aside>
+
+        {/* Main Canvas: Room Editor and direct children(+dim setup UI at top of editor) */}
         <main style={styles.canvas}>
+          {/* Show RoomDimensionSetup as top-level bar/panel inside the editor area */}
+          <RoomDimensionSetup />
+          {/* Main interactive room canvas */}
           <RoomLayoutEditor />
-          {/* Overlays & panels as placeholders (can be shown as modals/panels when needed) */}
+
+          {/* Overlays/modal scaffolding below, ready to show if needed */}
           <div id="theme-templates-overlay" style={styles.modal}>
             <ThemeTemplates />
           </div>
